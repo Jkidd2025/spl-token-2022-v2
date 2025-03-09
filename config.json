@@ -1,0 +1,38 @@
+{
+    "network": {
+        "cluster": "devnet",
+        "endpoint": "https://api.devnet.solana.com"
+    },
+    "wallets": {
+        "tokenAuthority": {
+            "publicKey": "FHGNorYUvRWjzyfsEZC2Qq7RfYZT4tbLSqegP58BDtoj",
+            "type": "ed25519",
+            "description": "Main token authority wallet with administrative privileges"
+        },
+        "mintAuthority": {
+            "publicKey": "FGvt4FteuRQ1Q4fNe1fctLAw52WgX29sXEhZpEuEyrpC",
+            "type": "ed25519",
+            "description": "Controls token minting operations"
+        },
+        "freezeAuthority": {
+            "publicKey": "AvVCBRe57jcSTmQ28VEw8EAWXmgfiuEmvEYto2qYKPEk",
+            "type": "ed25519",
+            "description": "Controls token account freezing"
+        },
+        "treasury": {
+            "publicKey": "HqnQ5Ndf4xXaEhiZTUCciTyVxBwqzqXPixmMxHq2i66m",
+            "type": "ed25519",
+            "description": "Main treasury for holding token reserves"
+        },
+        "feeCollector": {
+            "publicKey": "FdxuEphU3qn4e9FRWuARJTXzCmEBgwCf5Kr11EV3X9bv",
+            "type": "ed25519",
+            "description": "Collects transaction and operation fees"
+        }
+    },
+    "metadata": {
+        "createdAt": "2024-03-08",
+        "version": "1.0.0",
+        "program": "SPL Token v2"
+    }
+} 

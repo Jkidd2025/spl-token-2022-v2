@@ -1,0 +1,23 @@
+{
+    "name": "Sample Token",
+    "symbol": "SMPL",
+    "description": "A sample SPL token with metadata",
+    "attributes": [
+        {
+            "trait_type": "Token Type",
+            "value": "Utility"
+        },
+        {
+            "trait_type": "Total Supply",
+            "value": "1000000000"
+        },
+        {
+            "trait_type": "Decimals",
+            "value": 6
+        }
+    ],
+    "properties": {
+        "category": "token",
+        "creators": []
+    }
+} 
