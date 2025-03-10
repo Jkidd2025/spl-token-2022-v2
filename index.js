@@ -2,6 +2,7 @@ const { Connection } = require('@solana/web3.js');
 const fs = require('fs');
 const WalletManager = require('./src/managers/WalletManager');
 const TokenManager = require('./src/managers/TokenManager');
+require('dotenv').config();
 
 // Load configuration
 const config = JSON.parse(fs.readFileSync('./config.json', 'utf8'));
@@ -9,31 +10,7 @@ const config = JSON.parse(fs.readFileSync('./config.json', 'utf8'));
 async function displayTokenInfo(tokenManager, mintPubkey, tokenAccounts) {
     console.log('\n=== Token Information ===');
     
-    // Get mint info
-    const mintInfo = await tokenManager.getMintInfo(mintPubkey);
-    console.log('\nMint Info:');
-    console.log('  Supply:', mintInfo.supply);
-    console.log('  Decimals:', mintInfo.decimals);
-    console.log('  Mint Authority:', mintInfo.mintAuthority);
-    console.log('  Freeze Authority:', mintInfo.freezeAuthority);
-    console.log('  Program ID:', mintInfo.programId);
-    
-    if (mintInfo.extensions) {
-        console.log('  Extensions:', mintInfo.extensions.join(', '));
-    }
-
-    // Get metadata
-    try {
-        const metadata = await tokenManager.getTokenMetadata(mintPubkey);
-        console.log('\nMetadata:');
-        console.log('  Name:', metadata.name);
-        console.log('  Symbol:', metadata.symbol);
-        console.log('  URI:', metadata.uri);
-    } catch (error) {
-        console.log('\nNo metadata found');
-    }
-
-    // Get token account info
+    // Get balances for token accounts
     console.log('\nToken Account Balances:');
     for (const [name, account] of Object.entries(tokenAccounts)) {
         const balance = await tokenManager.getTokenBalance(account);
@@ -44,19 +21,8 @@ async function displayTokenInfo(tokenManager, mintPubkey, tokenAccounts) {
 async function main() {
     try {
         // Create connection to devnet
-        const connection = new Connection(
-            config.network.endpoint,
-            {
-                commitment: 'confirmed',
-                confirmTransactionInitialTimeout: 60000,
-                wsEndpoint: 'wss://api.devnet.solana.com/'
-            }
-        );
-
+        const connection = new Connection(config.network.endpoint);
         console.log('Connecting to Solana devnet...');
-        const slot = await connection.getSlot();
-        console.log('Successfully connected to Solana devnet!');
-        console.log('Current slot:', slot);
 
         // Initialize managers
         const walletManager = new WalletManager(connection, config);
@@ -66,60 +32,19 @@ async function main() {
         console.log('\nChecking wallet balances...');
         await walletManager.checkAllWallets();
 
-        // Create new token with metadata and transfer fee
-        console.log('\nCreating new SPL Token 2022 with metadata and transfer fee...');
-        
-        /**
-         * Token metadata configuration
-         * This defines the basic properties of the token
-         */
-        const tokenMetadata = {
-            name: "Sample Token",
-            symbol: "SMPL",
-            uri: "metadata.json",
-            decimals: 6
-        };
+        // Create new token
+        console.log('\nCreating new SPL Token...');
+        const mintPubkey = await tokenManager.createToken(6);  // 6 decimals
 
-        /**
-         * Create the token using TokenManager
-         * Note: We're not passing a transfer fee configuration here
-         * This means the token will use the default 5% fee configuration from TokenManager
-         * 
-         * If we wanted to use a custom fee, we could do it like this:
-         * const customFeeConfig = {
-         *     authority: config.wallets.feeCollector.publicKey,
-         *     withdrawWithheldAuthority: config.wallets.feeCollector.publicKey,
-         *     feeBasisPoints: 300, // 3% instead of 5%
-         *     maxFee: BigInt(0)
-         * };
-         * 
-         * And then pass it as the fourth parameter:
-         * tokenManager.createToken(
-         *     config.wallets.mintAuthority.publicKey,
-         *     config.wallets.freezeAuthority.publicKey,
-         *     tokenMetadata.decimals,
-         *     customFeeConfig
-         * );
-         */
-        const mintPubkey = await tokenManager.createToken(
-            config.wallets.mintAuthority.publicKey,
-            config.wallets.freezeAuthority.publicKey,
-            tokenMetadata.decimals
-        );
-
-        /**
-         * Create token accounts for:
-         * 1. Treasury - holds the initial token supply
-         * 2. FeeCollector - collects the 5% transfer fees
-         */
+        // Create token accounts
         console.log('\nCreating token accounts...');
         const tokenAccounts = {
             Treasury: await tokenManager.createTokenAccount(
                 config.wallets.treasury.publicKey,
                 mintPubkey
             ),
-            FeeCollector: await tokenManager.createTokenAccount(
-                config.wallets.feeCollector.publicKey,
+            Recipient: await tokenManager.createTokenAccount(
+                config.wallets.tokenAuthority.publicKey,
                 mintPubkey
             )
         };
@@ -130,30 +55,23 @@ async function main() {
         await tokenManager.mintToken(
             mintPubkey,
             tokenAccounts.Treasury,
-            config.wallets.mintAuthority.publicKey,
             initialSupply
         );
 
-        // Display initial token information
+        // Display token information
         await displayTokenInfo(tokenManager, mintPubkey, tokenAccounts);
 
-        /**
-         * Demonstrate transfer with fee
-         * When transferring 10,000 tokens:
-         * - 9,500 tokens will arrive at the destination (95%)
-         * - 500 tokens will go to the fee collector (5%)
-         */
-        console.log('\nTransferring tokens with fee...');
-        const transferAmount = 10000 * Math.pow(10, tokenMetadata.decimals); // 10,000 tokens
+        // Transfer tokens
+        console.log('\nTransferring tokens...');
+        const transferAmount = 1000000; // 1 million tokens
         await tokenManager.transferTokens(
             tokenAccounts.Treasury,
-            tokenAccounts.FeeCollector,
-            config.wallets.treasury.publicKey,
+            tokenAccounts.Recipient,
             transferAmount
         );
 
-        // Display final token information to show the fee collection
-        console.log('\nFinal token state after transfer:');
+        // Display final token information
+        console.log('\nFinal token state:');
         await displayTokenInfo(tokenManager, mintPubkey, tokenAccounts);
 
     } catch (error) {

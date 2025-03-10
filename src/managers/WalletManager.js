@@ -58,12 +58,19 @@ class WalletManager {
         const wallets = {
             'Token Authority': this.config.wallets.tokenAuthority.publicKey,
             'Mint Authority': this.config.wallets.mintAuthority.publicKey,
-            'Freeze Authority': this.config.wallets.freezeAuthority.publicKey,
-            'Treasury': this.config.wallets.treasury.publicKey,
-            'Fee Collector': this.config.wallets.feeCollector.publicKey
+            'Treasury': this.config.wallets.treasury.publicKey
         };
 
         for (const [role, publicKey] of Object.entries(wallets)) {
+            if (!publicKey || publicKey === 'YOUR_MINT_AUTHORITY_PUBLIC_KEY' || 
+                publicKey === 'YOUR_TREASURY_PUBLIC_KEY') {
+                console.log(`${role}:`);
+                console.log('  Address: Not configured');
+                console.log('  Balance: N/A');
+                console.log('-----------------------------');
+                continue;
+            }
+            
             const balance = await this.checkBalance(publicKey);
             console.log(`${role}:`);
             console.log(`  Address: ${publicKey}`);
@@ -74,14 +81,18 @@ class WalletManager {
 
     async fundWallets(amount) {
         const wallets = [
+            { role: 'Token Authority', address: this.config.wallets.tokenAuthority.publicKey },
             { role: 'Mint Authority', address: this.config.wallets.mintAuthority.publicKey },
-            { role: 'Freeze Authority', address: this.config.wallets.freezeAuthority.publicKey },
-            { role: 'Treasury', address: this.config.wallets.treasury.publicKey },
-            { role: 'Fee Collector', address: this.config.wallets.feeCollector.publicKey }
+            { role: 'Treasury', address: this.config.wallets.treasury.publicKey }
         ];
 
         console.log('\n=== Funding Wallets with Airdrops ===');
         for (const wallet of wallets) {
+            if (!wallet.address || wallet.address.startsWith('YOUR_')) {
+                console.log(`\nSkipping ${wallet.role} - not configured`);
+                continue;
+            }
+            
             console.log(`\nRequesting ${amount} SOL airdrop for ${wallet.role}...`);
             await this.requestAirdrop(wallet.address, amount);
             // Wait a bit between airdrops to avoid rate limiting

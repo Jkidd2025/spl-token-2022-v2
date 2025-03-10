@@ -1,27 +1,32 @@
-# Rust build directory
-/target/
-**/*.rs.bk
-
-# Solana build output
-/target/deploy/
-/target/release/
-
-# Node modules
-/node_modules/
-
-# Environment files
+# Environment variables
 .env
-.env.*
 
-# IDE specific files
+# Wallet keypairs
+wallets/*.json
+
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
 .idea/
 .vscode/
 *.swp
 *.swo
 
-# OS specific files
-.DS_Store
-Thumbs.db
+# Logs
+logs/
+*.log
+
+# Build output
+dist/
+build/
 
 # Solana specific
 .anchor/
@@ -37,5 +42,6 @@ test-ledger/
 *.pdb
 *.ilk
 
-# Logs
-*.log 
+# IDE and editor files
+.env.local
+.env.*.local 

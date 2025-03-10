@@ -1,20 +1,37 @@
-# SPL Token 2022 v2
+# SPL Token Program
 
-A Solana Program Library (SPL) Token implementation using the Token-2022 program, featuring transfer fees, metadata, and advanced token management capabilities.
+A simplified Solana Program Library (SPL) Token implementation focusing on core token functionality.
 
 ## Features
 
-- **Token-2022 Program Integration**: Uses the latest SPL Token standard
-- **Transfer Fee System**: Configurable transfer fees (default 5%)
-- **Token Metadata**: Full metadata support with update capability
-- **Account Management**: Treasury and Fee Collector account handling
-- **Token Operations**:
-  - Token creation with metadata
-  - Token minting
-  - Transfer with fee collection
-  - Account freezing/thawing
-  - Token burning
-  - Balance checking
+### Core Token Operations
+
+- Create new SPL tokens
+- Create token accounts
+- Mint tokens
+- Transfer tokens
+- Check token balances
+
+### Wallet Management
+
+- Token Authority: Creates and manages token setup
+- Mint Authority: Controls token minting
+- Treasury: Manages token distribution
+
+## Project Structure
+
+```
+/
+├── src/
+│   ├── managers/
+│   │   ├── TokenManager.js    # Token operations
+│   │   └── WalletManager.js   # Wallet management
+├── wallets/                   # Wallet keypair files
+├── index.js                   # Main program
+├── config.json                # Configuration
+├── .env                       # Private keys (not committed)
+└── README.md
+```
 
 ## Prerequisites
 
@@ -24,26 +41,43 @@ A Solana Program Library (SPL) Token implementation using the Token-2022 program
 
 ## Installation
 
+1. Clone the repository:
+
 ```bash
-# Clone the repository
-git clone https://github.com/YOUR_USERNAME/spl-token-2022-v2.git
-
-# Navigate to project directory
+git clone https://github.com/Jkidd2025/spl-token-2022-v2.git
 cd spl-token-2022-v2
+```
 
-# Install dependencies
+2. Install dependencies:
+
+```bash
 npm install
 ```
 
 ## Configuration
 
-1. Create a `config.json` file with your wallet configurations:
+1. Create wallet keypairs:
+
+```bash
+solana-keygen new --outfile wallets/token-authority.json
+solana-keygen new --outfile wallets/mint-authority.json
+solana-keygen new --outfile wallets/treasury.json
+```
+
+2. Set up environment variables in `.env`:
+
+```
+TOKEN_AUTHORITY_PRIVATE_KEY="[...]"
+MINT_AUTHORITY_PRIVATE_KEY="[...]"
+TREASURY_PRIVATE_KEY="[...]"
+```
+
+3. Update `config.json` with wallet public keys:
 
 ```json
 {
   "network": {
-    "endpoint": "https://api.devnet.solana.com",
-    "wsEndpoint": "wss://api.devnet.solana.com/"
+    "endpoint": "https://api.devnet.solana.com"
   },
   "wallets": {
     "tokenAuthority": {
@@ -52,12 +86,6 @@ npm install
     "mintAuthority": {
       "publicKey": "YOUR_MINT_AUTHORITY_PUBLIC_KEY"
     },
-    "freezeAuthority": {
-      "publicKey": "YOUR_FREEZE_AUTHORITY_PUBLIC_KEY"
-    },
-    "feeCollector": {
-      "publicKey": "YOUR_FEE_COLLECTOR_PUBLIC_KEY"
-    },
     "treasury": {
       "publicKey": "YOUR_TREASURY_PUBLIC_KEY"
     }
@@ -65,76 +93,58 @@ npm install
 }
 ```
 
-2. Update `metadata.json` with your token's metadata:
+## Wallet Requirements
 
-```json
-{
-  "name": "Your Token Name",
-  "symbol": "SYMBOL",
-  "description": "Your token description",
-  "attributes": [
-    {
-      "trait_type": "Token Type",
-      "value": "Utility"
-    }
-  ]
-}
-```
+Each wallet needs SOL on devnet to perform operations:
+
+- Token Authority: ~2 SOL (token creation, account creation)
+- Mint Authority: ~1 SOL (minting operations)
+- Treasury: ~1 SOL (transfer operations)
+
+Get SOL from:
+
+1. Solana Devnet Faucet: https://faucet.solana.com/
+2. CLI: `solana airdrop 2 <WALLET_ADDRESS> --url devnet`
 
 ## Usage
 
+Run the program:
+
 ```bash
-# Run the program
 node index.js
 ```
 
-## Project Structure
+The program will:
 
-```
-├── src/
-│   ├── managers/
-│   │   ├── TokenManager.js    # Token operations
-│   │   └── WalletManager.js   # Wallet management
-│   └── utils/
-├── index.js                   # Main program
-├── config.json                # Configuration
-├── metadata.json              # Token metadata
-└── README.md
-```
+1. Check wallet balances
+2. Create a new token
+3. Create token accounts
+4. Mint initial supply
+5. Perform a test transfer
+6. Display token information
 
-## Token Features
+## Security Notes
 
-### Transfer Fee
-
-- Default fee: 5% of transfer amount
-- Configurable fee percentage
-- No maximum fee cap
-- Fees collected in dedicated fee collector account
-
-### Metadata Support
-
-- Token name
-- Symbol
-- URI
-- Custom attributes
-- Updateable fields
+- Keep your private keys secure
+- Never commit the `.env` file
+- Use separate wallets for different responsibilities
+- Always test on devnet first
 
 ## Development
 
-To modify the transfer fee percentage or add custom configurations:
+To modify the program:
 
-```javascript
-const customFeeConfig = {
-  authority: config.wallets.feeCollector.publicKey,
-  withdrawWithheldAuthority: config.wallets.feeCollector.publicKey,
-  feeBasisPoints: 300, // 3% instead of default 5%
-  maxFee: BigInt(0),
-};
-```
+1. Update wallet configurations in `config.json`
+2. Modify token parameters in `index.js`
+3. Add new functionality in the manager classes
 
-## License
+## Error Handling
 
-MIT
+Common issues and solutions:
+
+- "Rate limit reached" - Wait for faucet limits to reset
+- "Insufficient funds" - Ensure wallets have enough SOL
+- "Account not found" - Verify wallet addresses
 
 ## Contributing
 
@@ -142,4 +152,4 @@ MIT
 2. Create your feature branch
 3. Commit your changes
 4. Push to the branch
-5. Create a new Pull Request
+5. Create a Pull Request
