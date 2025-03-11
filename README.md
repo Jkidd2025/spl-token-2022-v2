@@ -240,3 +240,91 @@ Common issues and solutions:
 3. Commit your changes
 4. Push to the branch
 5. Create a Pull Request
+
+## Mainnet Deployment
+
+### Prerequisites
+
+1. **Mainnet SOL**
+
+   - Minimum 2 SOL recommended for deployment
+   - Split across deployment wallets:
+     - Token Authority: ~1 SOL
+     - Mint Authority: ~0.5 SOL
+     - Treasury: ~0.5 SOL
+
+2. **Secure Environment**
+
+   - Clean development machine
+   - Secure network connection
+   - Up-to-date software
+
+3. **Wallet Security**
+   - Fresh wallet keypairs
+   - Hardware wallet for Treasury (recommended)
+   - Backup of all keypairs
+
+### Deployment Steps
+
+1. **Preparation**
+
+   ```bash
+   # Create new mainnet wallets
+   solana-keygen new --outfile wallets/mainnet/token-authority.json
+   solana-keygen new --outfile wallets/mainnet/mint-authority.json
+   solana-keygen new --outfile wallets/mainnet/treasury.json
+
+   # Fund wallets with SOL
+   # Verify configuration
+   node deploy_mainnet.js
+   ```
+
+2. **Token Creation**
+
+   ```bash
+   # Create and mint token
+   node create_token.js --mainnet
+
+   # Verify token on Solscan
+   # Save token address
+   ```
+
+3. **Security Measures**
+
+   ```bash
+   # Disable minting
+   node disable_minting.js --mainnet
+
+   # Disable metadata updates
+   node disable_metadata_updates.js --mainnet
+   ```
+
+4. **Verification**
+   - Confirm token on Solscan
+   - Verify metadata
+   - Test token transfers
+   - Confirm authorities are disabled
+
+### Security Checklist
+
+- [ ] Fresh wallets created
+- [ ] Sufficient SOL in wallets
+- [ ] Metadata URI is permanent
+- [ ] Token parameters verified
+- [ ] Mint authority disabled
+- [ ] Metadata authority disabled
+- [ ] Transfer functionality tested
+- [ ] All transactions confirmed
+
+### Post-Deployment
+
+1. **Backup**
+
+   - Save all transaction signatures
+   - Backup wallet files
+   - Document token addresses
+
+2. **Cleanup**
+   - Secure or delete deployment wallets
+   - Clear environment variables
+   - Remove sensitive files

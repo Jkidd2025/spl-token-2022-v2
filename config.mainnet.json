@@ -1,0 +1,26 @@
+{
+    "network": {
+        "endpoint": "https://api.mainnet-beta.solana.com",
+        "commitment": "finalized"
+    },
+    "tokenMint": null,
+    "wallets": {
+        "tokenAuthority": {
+            "publicKey": null
+        },
+        "mintAuthority": {
+            "publicKey": null
+        },
+        "treasury": {
+            "publicKey": null
+        }
+    },
+    "token": {
+        "name": "Stealth Mode Startup",
+        "symbol": "SMS",
+        "description": "Stealth Mode Startup ($SMS) Token",
+        "decimals": 6,
+        "initialSupply": 1000000000,
+        "uri": "https://raw.githubusercontent.com/Jkidd2025/spl-token-2022-v2/main/assets/metadata.json"
+    }
+} 
