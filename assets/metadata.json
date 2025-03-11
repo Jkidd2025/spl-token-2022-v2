@@ -1,0 +1,30 @@
+{
+    "name": "Stealth Mode Startup",
+    "symbol": "SMS",
+    "description": "A stealth mode startup is a company that keeps its products, plans, and operations secret from the public and competitors.",
+    "image": "https://raw.githubusercontent.com/Jkidd2025/spl-token-2022-v2/main/assets/logo.png",
+    "external_url": "https://github.com/Jkidd2025/spl-token-2022-v2",
+    "attributes": [
+        {
+            "trait_type": "Decimals",
+            "value": 6
+        },
+        {
+            "trait_type": "Token Standard",
+            "value": "SPL"
+        },
+        {
+            "trait_type": "Category",
+            "value": "Startup Token"
+        }
+    ],
+    "properties": {
+        "files": [
+            {
+                "uri": "https://raw.githubusercontent.com/Jkidd2025/spl-token-2022-v2/main/assets/logo.png",
+                "type": "image/png"
+            }
+        ],
+        "category": "image"
+    }
+} 
