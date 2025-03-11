@@ -1,38 +1,21 @@
 {
-    "network": {
-        "cluster": "devnet",
-        "endpoint": "https://api.devnet.solana.com"
+  "network": {
+    "endpoint": "https://api.devnet.solana.com",
+    "alternateEndpoints": [
+      "https://devnet.solana.rpcpool.com",
+      "https://rpc-devnet.helius.xyz/?api-key=1aec9f89-0420-4d30-8d4d-7d7fb4d6c7ef"
+    ]
+  },
+  "wallets": {
+    "tokenAuthority": {
+      "publicKey": "5oTtjRCZXDriRp8FqS7uUb2jMjHDkV6P4HsuzspKnANP"
     },
-    "wallets": {
-        "tokenAuthority": {
-            "publicKey": "FHGNorYUvRWjzyfsEZC2Qq7RfYZT4tbLSqegP58BDtoj",
-            "type": "ed25519",
-            "description": "Main token authority wallet with administrative privileges"
-        },
-        "mintAuthority": {
-            "publicKey": "FGvt4FteuRQ1Q4fNe1fctLAw52WgX29sXEhZpEuEyrpC",
-            "type": "ed25519",
-            "description": "Controls token minting operations"
-        },
-        "freezeAuthority": {
-            "publicKey": "AvVCBRe57jcSTmQ28VEw8EAWXmgfiuEmvEYto2qYKPEk",
-            "type": "ed25519",
-            "description": "Controls token account freezing"
-        },
-        "treasury": {
-            "publicKey": "HqnQ5Ndf4xXaEhiZTUCciTyVxBwqzqXPixmMxHq2i66m",
-            "type": "ed25519",
-            "description": "Main treasury for holding token reserves"
-        },
-        "feeCollector": {
-            "publicKey": "FdxuEphU3qn4e9FRWuARJTXzCmEBgwCf5Kr11EV3X9bv",
-            "type": "ed25519",
-            "description": "Collects transaction and operation fees"
-        }
+    "mintAuthority": {
+      "publicKey": "DNG5VMXLQ726UkTiENf5FvteVqju9suuFGqMS5DqtqUq"
     },
-    "metadata": {
-        "createdAt": "2024-03-08",
-        "version": "1.0.0",
-        "program": "SPL Token v2"
+    "treasury": {
+      "publicKey": "6ND4vrfrTyrUgWcyTHirg6yDNqeFsiCsc63suZko8FjD"
     }
-} 
+  },
+  "tokenMint": "6ABBo9Y2nVtXuhVmnWmkrLMtfrvxuHJngQGLfeyXk1d8"
+}

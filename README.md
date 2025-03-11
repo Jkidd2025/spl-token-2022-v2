@@ -1,6 +1,93 @@
-# SPL Token Program
+# SPL Token 2022 v2
 
-A simplified Solana Program Library (SPL) Token implementation focusing on core token functionality.
+This repository contains the implementation of the Stealth Mode Startup ($SMS) token on Solana's devnet using SPL Token 2022 standard.
+
+## Token Details
+
+- **Name**: Stealth Mode Startup
+- **Symbol**: SMS
+- **Total Supply**: 1,000,000,000 (1 billion) tokens
+- **Decimals**: 6
+- **Token Mint Address**: `6ABBo9Y2nVtXuhVmnWmkrLMtfrvxuHJngQGLfeyXk1d8`
+- **Metadata Account**: `E3WnVs4fidMVAin47u6i1eTvm6d81SNvoDrVHxACHtAX`
+
+## Security Features
+
+### Immutable Supply
+
+- Mint authority has been permanently disabled
+- Transaction signature: `87e16fa` (mint creation and initial supply)
+- No additional tokens can be minted
+
+### Immutable Metadata
+
+- Metadata update authority has been permanently disabled
+- Transaction signature: `4C2xjE9P5uszvrgVTuLhPoR9qzGtE6hVrABtuhy6NmqxdArwbZsH64wNUgCMvxcm3nfLePJr35MeUPqt5CQ22Du`
+- Token metadata (name, symbol, URI) cannot be modified
+
+## Testing Confirmations
+
+### Token Creation and Supply
+
+- ✅ Successfully created token mint
+- ✅ Minted initial supply of 1 billion tokens
+- ✅ Verified token metadata on-chain
+- ✅ Confirmed token appears on Solscan (devnet)
+
+### Transfer Testing
+
+- ✅ Created test wallet: `5GL8Ffo7dDmqKjiDZFWkUvxqB141ezcaRnX3QnwAq4XF`
+- ✅ Successfully transferred 1,000 tokens to test wallet
+- ✅ Transaction signature: `4jfBoVFoJRwqnghLniaFGKqJogWWFampUkfVQQJiQ3f6hwzXMrkqEXi4hNSNstk6MbZyjqekBocKKXb1pHsryRvM`
+- ✅ Verified balances after transfer:
+  - Treasury: 999,999,000 SMS
+  - Test Wallet: 1,000 SMS
+
+### Security Testing
+
+- ✅ Confirmed mint authority is disabled
+- ✅ Confirmed metadata is immutable
+- ✅ Verified token supply cannot be increased
+- ✅ Verified metadata cannot be modified
+
+## Repository Structure
+
+```
+.
+├── assets/
+│   ├── logo.png
+│   └── metadata.json
+├── wallets/
+│   ├── token-authority.json
+│   ├── mint-authority.json
+│   └── treasury.json
+├── create_token.js
+├── transfer_tokens.js
+├── disable_minting.js
+└── disable_metadata_updates.js
+```
+
+## Scripts
+
+- `create_token.js`: Creates the token mint and initial supply
+- `transfer_tokens.js`: Handles token transfers between accounts
+- `disable_minting.js`: Disables the mint authority
+- `disable_metadata_updates.js`: Makes token metadata immutable
+
+## Verification Links
+
+- Token on Solscan: [View on Devnet](https://solscan.io/token/6ABBo9Y2nVtXuhVmnWmkrLMtfrvxuHJngQGLfeyXk1d8?cluster=devnet)
+- Metadata: [View JSON](https://raw.githubusercontent.com/Jkidd2025/spl-token-2022-v2/main/assets/metadata.json)
+
+## Dependencies
+
+```json
+{
+  "@solana/spl-token": "latest",
+  "@solana/web3.js": "latest",
+  "@metaplex-foundation/mpl-token-metadata": "latest"
+}
+```
 
 ## Features
 
