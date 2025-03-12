@@ -266,7 +266,17 @@ Common issues and solutions:
 
 ### Deployment Steps
 
-1. **Preparation**
+1. **Metadata Preparation**
+
+   ```bash
+   # Update and verify metadata for mainnet
+   node prepare_mainnet_metadata.js
+
+   # Verify metadata URL after pushing changes
+   curl -s https://raw.githubusercontent.com/Jkidd2025/spl-token-2022-v2/main/assets/metadata.json
+   ```
+
+2. **Wallet Preparation**
 
    ```bash
    # Create new mainnet wallets
@@ -279,7 +289,7 @@ Common issues and solutions:
    node deploy_mainnet.js
    ```
 
-2. **Token Creation**
+3. **Token Creation**
 
    ```bash
    # Create and mint token
@@ -289,7 +299,7 @@ Common issues and solutions:
    # Save token address
    ```
 
-3. **Security Measures**
+4. **Security Measures**
 
    ```bash
    # Disable minting
@@ -299,7 +309,7 @@ Common issues and solutions:
    node disable_metadata_updates.js --mainnet
    ```
 
-4. **Verification**
+5. **Verification**
    - Confirm token on Solscan
    - Verify metadata
    - Test token transfers
